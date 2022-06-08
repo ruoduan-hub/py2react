@@ -13,6 +13,7 @@
 >  python
 
 - flask 
+- python-dotenv
 - flask_cors
 
 
