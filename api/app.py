@@ -1,24 +1,36 @@
 #!/usr/bin/python3
 
 # from flask import Flask, request, render_template, url_for, redirect
-from flask import Flask, request, redirect
-from flask_cors import CORS
+from flask import Flask, request, redirect, Response
 
-app = Flask(__name__)
-CORS(app)
+from src.config import create_app
+
+app = create_app()
+
 
 # @app.route('/', methods=['GET'])
 # def page():
 #     return render_template('index.html')
 
+
 @app.route('/hello', methods=['GET'])
 def hello():
-    return { 'title': 'Hello Word ！', 'info': ' This a Flask and  app ! <br> language： Api use Python; Front use Typescript  ' }
+    return {'title': 'Hello Word ！',
+            'info': ' This a Flask and  app ! <br> language： Api use Python; Front use Typescript  '}
+
 
 @app.route('/mgtest.gif', methods=['GET'])
-def mdFunc():
-  print(request.args['name'])
-  return redirect('https://sm.ms/image/W4yvPm5CFA3hMcX')
+def gif_md():
+    """
+    GIF埋点
+    返回GIF图片，获取埋点数据，
+    :return: file -> image/gif
+    """
+    print('埋点数据：%s 时间戳：%s' % (request.args['data'], request.args['now']))
+    with open('./assets/11.gif', 'rb') as f:
+        img = f.read()
+    return Response(img, mimetype='image/gif')
+
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
